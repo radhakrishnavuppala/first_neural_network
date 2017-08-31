@@ -13900,7 +13900,7 @@ height=263
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">NeuralNetwork</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -13976,25 +13976,16 @@ height=263
             <span class="c1"># TODO: Output error - Replace this value with your calculations.</span>
             <span class="n">error</span> <span class="o">=</span> <span class="n">final_outputs</span> <span class="o">-</span> <span class="n">y</span> <span class="c1"># Output layer error is the difference between desired target and actual output.</span>
             <span class="c1"># TODO: Calculate the hidden layer&#39;s contribution to the error</span>
-            <span class="n">delta_2</span> <span class="o">=</span> <span class="n">error</span> <span class="o">*</span> <span class="mi">1</span> <span class="c1"># As final layer is linear and thus has derivative of 1</span>
-            <span class="n">dEdw2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta_2</span><span class="p">,</span> <span class="n">hidden_outputs</span><span class="p">)</span>
-            
-            <span class="n">hidden_error</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">output_error_term</span> <span class="o">=</span> <span class="n">error</span> <span class="c1"># </span>
 
+            <span class="n">hidden_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">output_error_term</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">weights_hidden_to_output</span><span class="o">.</span><span class="n">T</span> <span class="p">)</span>
             
-            <span class="n">f1_derivative</span> <span class="o">=</span> <span class="n">hidden_outputs</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">hidden_outputs</span><span class="p">)</span>
-            <span class="n">delta_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">delta_2</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">weights_hidden_to_output</span><span class="o">.</span><span class="n">T</span> <span class="p">)</span> <span class="o">*</span> <span class="n">f1_derivative</span>
-            <span class="n">dEdw1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delta_1</span><span class="p">)</span>
+            <span class="n">hidden_error_term</span> <span class="o">=</span>  <span class="n">hidden_error</span> <span class="o">*</span> <span class="n">hidden_outputs</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">hidden_outputs</span><span class="p">)</span>
             
-            <span class="c1"># TODO: Backpropagated error terms - Replace these values with your calculations.</span>
-            <span class="n">output_error_term</span> <span class="o">=</span> <span class="n">dEdw2</span><span class="o">.</span><span class="n">T</span>
-            <span class="n">hidden_error_term</span> <span class="o">=</span> <span class="n">dEdw1</span>
-
-
             <span class="c1"># Weight step (input to hidden)</span>
-            <span class="n">delta_weights_i_h</span> <span class="o">+=</span>  <span class="n">hidden_error_term</span>
+            <span class="n">delta_weights_i_h</span> <span class="o">+=</span>  <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">hidden_error_term</span><span class="p">)</span>
             <span class="c1"># Weight step (hidden to output)</span>
-            <span class="n">delta_weights_h_o</span> <span class="o">+=</span>  <span class="n">output_error_term</span>
+            <span class="n">delta_weights_h_o</span> <span class="o">+=</span>  <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">hidden_outputs</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">output_error_term</span><span class="p">)</span>
 
         <span class="c1"># TODO: Update the weights - Replace these values with your calculations.</span>
 
@@ -14028,7 +14019,7 @@ height=263
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">MSE</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
@@ -14051,7 +14042,7 @@ height=263
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
@@ -14133,7 +14124,7 @@ height=263
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>.....
 ----------------------------------------------------------------------
-Ran 5 tests in 0.007s
+Ran 5 tests in 0.005s
 
 OK
 </pre>
@@ -14142,7 +14133,7 @@ OK
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[15]:</div>
+<div class="prompt output_prompt">Out[52]:</div>
 
 
 
@@ -14393,7 +14384,7 @@ OK
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">iterations</span> <span class="o">=</span> <span class="mi">1500</span>
